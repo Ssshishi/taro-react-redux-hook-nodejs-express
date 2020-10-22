@@ -1,3 +1,4 @@
+// chalk是一个颜色的插件。可以通过chalk.blue(‘hello world’)来改变颜色，
 const chalk = require('chalk')
 const msgPath = process.env.HUSKY_GIT_PARAMS
 const msg = require('fs')

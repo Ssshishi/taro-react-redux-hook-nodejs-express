@@ -26,7 +26,7 @@ class App extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-  config: Config = {
+  config: any = {
     pages: [
       "pages/index/index",
       "pages/dailyRecommend/index",
@@ -51,6 +51,7 @@ class App extends Component {
       navigationBarTitleText: "WeChat",
       navigationBarTextStyle: "white"
     },
+    // 申明需要后台运行的能力 目前支持以下项目:audio: 后台音乐播放
     requiredBackgroundModes: ["audio"]
   };
 

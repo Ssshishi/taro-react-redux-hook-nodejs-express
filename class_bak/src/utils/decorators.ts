@@ -19,7 +19,7 @@ export function injectPlaySong() {
         Taro.eventCenter.off('nextSong')
         return super.componentWillMount && super.componentWillMount()
       }
-    
+
       componentDidMount() {
         console.log('test @injectPlaySong')
         Taro.eventCenter.on('nextSong', () => {

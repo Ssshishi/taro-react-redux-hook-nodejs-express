@@ -1,4 +1,5 @@
 $primary-color: #d43c33;
+//  @mixin 后添加名称与样式
 @mixin text-ellipsis {
   overflow: hidden;
   /*文本不会换行*/

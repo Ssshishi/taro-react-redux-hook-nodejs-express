@@ -28,6 +28,9 @@ const config = {
       ]
     }
   },
+  plugins: [
+    '@tarojs/plugin-sass'
+  ],
   defineConstants: {},
   alias: {
     "@": path.resolve(__dirname, "..", "src")
