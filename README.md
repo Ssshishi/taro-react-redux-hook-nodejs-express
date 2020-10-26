@@ -1,4 +1,4 @@
-## taro-music
+## music-show
 
 > 基于`Taro`与网易云音乐 api 开发，技术栈主要是：`typescript+taro+taro-ui+redux+react-hooks`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用，打造一个最佳实践项目，通过这个项目也可以帮助你快速使用`Taro`开发一个属于你自己的小程序，此项目会持续更新，欢迎`watch`和`star`～
 
