@@ -33,14 +33,18 @@
             height: 50px;
         }
     }
+// 处理事件 bar
     .handle_list {
         overflow: hidden;
         margin-top: 40px;
         padding: 0 40px;
+        white-space: nowrap;
         .handle_list__item {
             width: 20%;
-            float: left;
+            // float: left;
             text-align: center;
+            display: inline-block;
+            // white-space: nowrap;
             .handle_list__item__icon-wrap {
                 background-color: $primary-color;
                 width: 100px;
@@ -59,6 +63,7 @@
             }
         }
     }
+// 推荐歌单
     .recommend_playlist {
         padding: 40px;
         overflow: hidden;

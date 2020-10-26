@@ -1,3 +1,4 @@
+// 歌单详情
 import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
@@ -62,7 +63,9 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentWillMount() {
+    // 获取跳转过来传入的参数
     const { id, name } = this.$router.params;
+    // 设置标题
     Taro.setNavigationBarTitle({
       title: name
     });

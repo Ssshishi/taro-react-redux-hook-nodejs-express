@@ -1,3 +1,4 @@
+// 搜索页面
 import { ComponentClass } from 'react'
 import { AtSearchBar, AtIcon } from 'taro-ui'
 import Taro, { Component, Config } from '@tarojs/taro'
@@ -43,6 +44,7 @@ class Page extends Component<{}, PageState> {
     }
   }
 
+  // 在接收props生命周期时 打印当前props 和 之后props
   componentWillReceiveProps (nextProps) {
     console.log(this.props, nextProps)
   }
@@ -62,16 +64,19 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
+  // 搜索文字变化
   searchTextChange(val) {
     this.setState({
       searchValue: val
     })
   }
 
+  // 搜索结果
   searchResult() {
     this.goResult(this.state.searchValue)
   }
 
+  // 进入搜索关键词页面
   goResult(keywords) {
     setKeywordInHistory(keywords)
     Taro.navigateTo({
@@ -79,6 +84,7 @@ class Page extends Component<{}, PageState> {
     })
   }
 
+  // 清除搜索历史记录
   clearKeywordInHistory() {
     this.setState({
       historyList: []
@@ -86,6 +92,7 @@ class Page extends Component<{}, PageState> {
     clearKeywordInHistory()
   }
 
+  // 获取热门搜索
   getHotSearch() {
     api.get('/search/hot/detail', {
     }).then((res) => {
@@ -102,6 +109,7 @@ class Page extends Component<{}, PageState> {
     const { searchValue, hotList, historyList } = this.state
     return (
       <View className='search_container'>
+        {/* 搜索栏 */}
         <AtSearchBar
           actionName='搜一下'
           value={searchValue}
@@ -112,6 +120,7 @@ class Page extends Component<{}, PageState> {
           className='search__input'
           fixed={true}
         />
+        {/* 搜索历史 热搜榜 */}
         <ScrollView className='search_content' scrollY>
           {
             historyList.length ? <View className='search__history'>
@@ -157,7 +166,7 @@ class Page extends Component<{}, PageState> {
                         })
                       }>
                         {item.searchWord}
-                      </Text> 
+                      </Text>
                       <Text className='search__hot__list__item__info__score'>
                         {item.score}
                       </Text>

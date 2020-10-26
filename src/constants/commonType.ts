@@ -1,3 +1,5 @@
+// state 状态的 类型
+// 音乐的选项类型
 export type MusicItemType = {
   name: string,
   id: number,
@@ -15,6 +17,7 @@ export type MusicItemType = {
   current?: boolean
 }
 
+// 当前歌曲信息类型
 export type currentSongInfoType = {
   id: number,
   name: string,
@@ -31,6 +34,7 @@ export type currentSongInfoType = {
   st: number // 是否喜欢
 }
 
+// 播放列表详情信息类型
 export type playListDetailInfoType = {
   coverImgUrl: string,
   playCount: number,
@@ -44,6 +48,7 @@ export type playListDetailInfoType = {
   tracks: Array<MusicItemType>
 }
 
+// 歌曲类型
 export type songType = {
   playListDetailInfo: playListDetailInfoType,
   playListDetailPrivileges: Array<{
@@ -78,6 +83,7 @@ export type songType = {
   recentTab: number
 }
 
+// dj电台类型
 export type djListType = {
   djListDetailInfo: {
     name: string

@@ -1,9 +1,12 @@
+// 装饰器 完成后台运行
 import Taro from '@tarojs/taro'
 
 /**
  * 装饰器可以自己本身是个函数，或者可以是执行后是一个函数，这样可以传入需要的参数，如果本身是一个函数则使用的时候直接@injectPlaySong，如果想带参数则@injectPlaySong(params)
  * 该装饰器主要是为了解决在离开当前播放页到其他页面后可以继续播放的问题
  */
+// ts 装饰器  
+// 在TypeScript中装饰器还属于实验性语法，所以要想使用必须在配置文件中tsconfig.json编译选项中开启： "experimentalDecorators": true,
 export function injectPlaySong() {
   // 如果无法确定类型,可以用as any 也可以完美解决.
   return function songDecorator(constructor) {

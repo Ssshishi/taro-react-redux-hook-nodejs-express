@@ -1,3 +1,5 @@
+// action事件的类型
+
 // 获取歌曲详情
 export const GETSONGDETAIL: string = 'GETSONGDETAIL'
 // 获取歌单详情

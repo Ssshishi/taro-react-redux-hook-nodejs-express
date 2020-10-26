@@ -8,7 +8,7 @@ type Props = {
   color: string
 }
 
-
+// 空白大小
 const CWhiteSpace: FC<Props> = ({ size, color }) => {
   const cls = classnames({
     whiteSpace_components: true,

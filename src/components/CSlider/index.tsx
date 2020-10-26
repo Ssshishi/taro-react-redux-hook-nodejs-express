@@ -9,8 +9,9 @@ type Props = {
   onChanging: (object) => any;
 };
 
+// 广告项 滑动
 const CSlider: FC<Props> = ({ percent }) => {
-  // console.log("CSlider render");
+  console.log("CSlider render");
   return (
     <View className="slider_components">
       <Slider
@@ -24,6 +25,7 @@ const CSlider: FC<Props> = ({ percent }) => {
   );
 };
 
+// 优化渲染
 export default memo(CSlider, (prevProps, nextProps) => {
   return prevProps.percent === nextProps.percent;
 });

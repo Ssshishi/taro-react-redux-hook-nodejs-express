@@ -1,3 +1,4 @@
+// 视频详情
 import Taro, { useState, useEffect, useRouter, FC } from '@tarojs/taro'
 import { View, Video, Text, Image, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
@@ -24,7 +25,8 @@ type videoInfo = {
       id: number,
       name: string
     }>
-  } 
+  }
+  // mv信息
 type mvInfo = {
     cover: string,
     name: string,
@@ -79,7 +81,9 @@ type mvInfo = {
     more: boolean
   }
 
+// 组件
 const Page: FC = () => {
+  // 视频信息
   const [ videoInfo, setVideoInfo ] = useState<videoInfo>(
     {
           coverUrl: '',
@@ -96,8 +100,11 @@ const Page: FC = () => {
           videoGroup: []
     }
   )
+  // 视频地址
   const [ videoUrl, setVideoUrl ] = useState<string>('')
+  // 相关列表
   const [ relatedList, setRelatedList ] = useState<relatedList>([])
+  // mv信息
   const [ mvInfo, setMvInfo ] = useState<mvInfo>(
     {
         cover: '',
@@ -114,23 +121,33 @@ const Page: FC = () => {
         avatarUrl: ''
     }
   )
+  // mv相关列表
   const [ mvRelatedList, setMvRelatedList ] = useState<mvRelatedList>([])
+  // 显示更多信息
   const [ showMoreInfo, setShowMoreInfo ] = useState<boolean>(false)
+  // 类型
   const [ type, setType ] = useState<any>('')
+  // 评论信息
   const [ commentInfo, setCommentInfo ] = useState<commentInfo>(
     {
       commentList: [],
       more: true
     }
   )
+  // 路由
   const router = useRouter()
+  // 路由参数
   const routerParams = router.params
+  // 获取路由参数中的id
   const { id } = routerParams
+
+  // 类似与生命周期 useEffect作用于渲染后
   useEffect(() => {
     setType(routerParams.type)
     getDetailByType(id)
   }, [id])
 
+  // 按分类获取详情
   function getDetailByType(id) {
     const { type } = router.params
     if (type === 'mv') {
@@ -140,9 +157,12 @@ const Page: FC = () => {
     }
   }
 
+  // 获取mv详情
   function getMvDetail(id) {
+    // 创建 video 上下文 VideoContext 对象。
     const videoContext = Taro.createVideoContext('myVideo')
     videoContext.pause()
+    // 获取API请求 mv详情
     api.get('/mv/detail', {
       mvid: id
     }).then(({ data }) => {
@@ -158,6 +178,7 @@ const Page: FC = () => {
         })
       }
     })
+    // 获取API请求 mv详情
     api.get('/mv/url', {
       id
     }).then(({ data }) => {
@@ -166,6 +187,7 @@ const Page: FC = () => {
         setVideoUrl(data.data.url)
       }
     })
+    // 获取API请求 mv详情
     api.get('/simi/mv', {
       mvid: id
     }).then(({ data }) => {
@@ -207,6 +229,7 @@ const Page: FC = () => {
     getCommentInfo()
   }
 
+  // 获取评论信息
   function getCommentInfo() {
     const { type, id } = router.params
     // const type = 'video'
@@ -220,12 +243,13 @@ const Page: FC = () => {
       if (data.comments) {
         setCommentInfo({
           commentList: commentInfo.commentList.concat(data.comments),
-          more: data.more     
+          more: data.more
         })
-      } 
+      }
     })
   }
 
+  // 格式化持续时间
   function formatDuration(ms: number) {
     // @ts-ignore
     let minutes: string = formatNumber(parseInt(ms / 60000))
@@ -234,6 +258,7 @@ const Page: FC = () => {
     return `${minutes}:${seconds}`
   }
 
+  // 选择更多信息
   function switchMoreInfo() {
     setShowMoreInfo(!showMoreInfo)
   }
@@ -241,6 +266,7 @@ const Page: FC = () => {
 
     return (
       <View className='videoDetail_container'>
+        {/* 视频播放 */}
         <Video
           src={videoUrl}
           controls={true}
@@ -251,11 +277,13 @@ const Page: FC = () => {
           muted={false}
           id="myVideo"
         />
+        {/* 视频详情 */}
         <ScrollView scrollY className='videoDetail_scroll' onScrollToLower={() => getCommentInfo()}>
           {
             (!videoInfo.title && !mvInfo.name) ? <CLoading /> : ''
           }
           {
+            // 显示视频详情
             type === 'video' ?
             <View className='videoDetail__play__container'>
               <View className='videoDetail__play__title'>
@@ -301,6 +329,7 @@ const Page: FC = () => {
                 <Text className='videoDetail__play__playtime'>{ formatCount(mvInfo.playCount) }次观看</Text> 
               </View>
               {
+                //显示更多信息
                 showMoreInfo ? 
                 <View className='videoDetail__play__descinfo'>
                   <View>
@@ -316,6 +345,7 @@ const Page: FC = () => {
                   </View>
                 </View> : ''
               }
+              {/* 点赞 收藏 评论 转发 */}
               <View className='flex videoDetail__play__numinfo'>
                 <View className='flex-item'>
                   <AtIcon prefixClass='fa' value='thumbs-o-up' size='24' color='#323232'></AtIcon>
@@ -334,13 +364,16 @@ const Page: FC = () => {
                   <View className='videoDetail__play__numinfo__text'>{mvInfo.shareCount}</View>
                 </View>
               </View>
+              {/* 歌手信息 图片 名字 */}
               <View className='videoDetail__play__user'>
                 <Image src={mvInfo.avatarUrl} className='videoDetail__play__user__cover'/>
                 <Text>{mvInfo.artists[0].name}</Text>
               </View>
             </View>
           }
+          {/* 空格 */}
           <CWhiteSpace size='sm' color='#f8f8f8'/>
+          {/* 相关推荐 */}
           <View className='videoDetail_relation'>
             <View className='videoDetail__title'>
               相关推荐

@@ -33,7 +33,7 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentDidShow () {
-   }
+  }
 
   componentDidHide () { }
 

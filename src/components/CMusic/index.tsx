@@ -18,19 +18,26 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager();
 
 const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
   console.log("CMusic Render");
+  // 进入新的界面都会渲染
+  console.log("进入新界面")
   let { currentSongInfo, isPlaying, canPlayList } = songInfo;
+  // hook
   const [isOpened, setIsOpened] = useState(false);
   const updatePlayStatusFunc = onUpdatePlayStatus;
   currentSongInfo = currentSongInfo || {};
+  // 当前歌曲信息名字不存在时 返回空
   if (!currentSongInfo.name) return <View></View>;
   function goDetail() {
     const { id } = currentSongInfo;
+    console.log("进入歌曲详情")
     Taro.navigateTo({
       url: `/pages/songDetail/index?id=${id}`
     });
   }
 
+  // 切换播放状态
   function switchPlayStatus() {
+    console.log("切换播放状态")
     const { isPlaying } = songInfo;
     if (isPlaying) {
       backgroundAudioManager.pause();
@@ -45,12 +52,15 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
     }
   }
 
+  // 播放歌曲
   function playSong(id) {
+    console.log("播放歌曲")
     Taro.navigateTo({
       url: `/pages/songDetail/index?id=${id}`
     });
   }
 
+  // 歌曲播放界面
   return (
     <View
       className={classnames({
@@ -58,6 +68,7 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
         isHome: isHome
       })}
     >
+      {/* 图片 */}
       <Image
         className={classnames({
           music__pic: true,
@@ -66,6 +77,7 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
         })}
         src={currentSongInfo.al.picUrl}
       />
+      {/* 歌词详情 包括 歌名  歌词 */}
       <View className="music__info" onClick={() => goDetail()}>
         <View className="music__info__name">{currentSongInfo.name}</View>
         <View className="music__info__desc">
@@ -73,6 +85,7 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
           {currentSongInfo.al.name}
         </View>
       </View>
+      {/* 播放标签 播放 暂停 播放列表 */}
       <View className="music__icon--play">
         <AtIcon
           value={isPlaying ? "pause" : "play"}
@@ -120,6 +133,7 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
   );
 };
 
+// 默认属性
 CMusic.defaultProps = {
   songInfo: {
     currentSongInfo: {

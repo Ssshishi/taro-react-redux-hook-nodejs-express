@@ -1,3 +1,5 @@
+// 搜索结果 有不同项 即页面  包括 单曲 歌单 视频 mv 
+// 依据关键词 查看是否存在 并请求APi 请求成功则会 跳转页面 失败则报没有这个关键词信息
 import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Image, Text, ScrollView } from "@tarojs/components";
@@ -35,6 +37,7 @@ type PageDispatchProps = {
 
 type IProps = PageStateProps & PageDispatchProps;
 
+// 页面需要的state状态
 type PageState = {
   keywords: string;
   activeTab: number;
@@ -254,6 +257,7 @@ type PageState = {
   }>;
 };
 
+// 退出播放 进入后台
 @injectPlaySong()
 @connect(
   ({ song }) => ({
@@ -271,6 +275,7 @@ type PageState = {
     }
   })
 )
+
 class Page extends Component<IProps, PageState> {
   /**
    * 指定config的类型声明为: Taro.Config
@@ -286,6 +291,7 @@ class Page extends Component<IProps, PageState> {
   constructor(props) {
     super(props);
     const { keywords } = this.$router.params;
+    // 状态
     this.state = {
       // keywords: '海阔天空',
       keywords,
@@ -402,7 +408,7 @@ class Page extends Component<IProps, PageState> {
   componentWillMount() {
     const { keywords } = this.state;
     Taro.setNavigationBarTitle({
-      title: `${keywords}的搜索结果`
+      title: `${keywords} 搜索结果`
     });
     this.getResult();
   }
@@ -417,8 +423,10 @@ class Page extends Component<IProps, PageState> {
 
   componentDidHide() {}
 
+  // 获取搜索结果
   getResult() {
     const { keywords, totalInfo } = this.state;
+    // 设置导航栏标题
     Taro.setNavigationBarTitle({
       title: `${keywords}的搜索结果`
     });
@@ -489,6 +497,7 @@ class Page extends Component<IProps, PageState> {
       });
   }
 
+  // 播放歌曲 请求API  请求成功则跳转页面
   playSong(songId) {
     api
       .get("/check/music", {
@@ -496,6 +505,7 @@ class Page extends Component<IProps, PageState> {
       })
       .then(res => {
         if (res.data.success) {
+          // 在所有跳转的 url 后面添加查询字符串参数进行跳转传参
           Taro.navigateTo({
             url: `/pages/songDetail/index?id=${songId}`
           });
@@ -508,6 +518,7 @@ class Page extends Component<IProps, PageState> {
       });
   }
 
+  // 获取视频详情 判断是 视频 还是 mv 请求成功后跳转到 视频页面
   goVideoDetail(id, type) {
     let apiUrl = "/video/url";
     if (type === "mv") {

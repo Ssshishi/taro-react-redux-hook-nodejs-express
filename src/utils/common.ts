@@ -1,3 +1,4 @@
+// 公共事件 比如 格式转换 歌词 时间 本地缓存获取歌词
 /*
  * @Description: In User Settings Edit
  * @Author: your name

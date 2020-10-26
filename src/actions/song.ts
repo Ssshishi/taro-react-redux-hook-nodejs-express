@@ -1,3 +1,5 @@
+// action事件
+
 import {
   GETSONGDETAIL,
   GETPLAYLISTDETAIL,
@@ -17,6 +19,7 @@ import {
 import api from '../services/api'
 import { parse_lrc } from '../utils/common'
 
+// 歌曲详情
 export const getSongDetail = (payload) => {
   return {
     type: GETSONGDETAIL,
@@ -25,16 +28,20 @@ export const getSongDetail = (payload) => {
 }
 
 // 获取歌单详情
+// 获取播放列表详情
 export const getPlayListDetail = (payload) => {
   const { id } = payload
   return dispatch => {
+    // 发出 RESETPLAYLIST 重置播放列表action事件
     dispatch({
       type: RESETPLAYLIST,
     })
     api.get('/playlist/detail', {
       id
     }).then((res) => {
+      // 播放列表详情
       let playListDetailInfo = res.data.playlist
+      // 返回歌单名字 ID号 ar al copyright
       playListDetailInfo.tracks = playListDetailInfo.tracks.map((item) => {
         let temp: any = {}
         temp.name = item.name
@@ -44,6 +51,7 @@ export const getPlayListDetail = (payload) => {
         temp.copyright = item.copyright
         return temp
       })
+      // 获取播放列表详情
       dispatch({
         type: GETPLAYLISTDETAIL,
         payload: {
@@ -122,6 +130,7 @@ export const getSongInfo = (payload) => {
     api.get('/song/detail', {
       ids: id
     }).then((res) => {
+      // 歌曲第一项
       let songInfo = res.data.songs[0]
       api.get('/song/url', {
         id
@@ -130,6 +139,7 @@ export const getSongInfo = (payload) => {
         api.get('/lyric', {
           id
         }).then((res) => {
+          // 歌词解析 字符串变成数组形式
           const lrc = parse_lrc(res.data.lrc && res.data.lrc.lyric ? res.data.lrc.lyric : '');
           res.data.lrclist = lrc.now_lrc;
           res.data.scroll = lrc.scroll ? 1 : 0

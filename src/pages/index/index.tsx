@@ -1,11 +1,14 @@
+// 进入页面
 import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Image, Text, Swiper, SwiperItem } from "@tarojs/components";
+import { View, Image, Text, Swiper, SwiperItem, ScrollView } from "@tarojs/components";
 import { AtTabBar, AtSearchBar, AtIcon } from "taro-ui";
 import { connect } from "@tarojs/redux";
 import classnames from "classnames";
+// 组件
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
+// API请求 退出播放 歌曲类型 action事件
 import api from "../../services/api";
 import { injectPlaySong } from "../../utils/decorators";
 import { songType } from "../../constants/commonType";
@@ -18,6 +21,7 @@ import {
   updatePlayStatus
 } from "../../actions/song";
 
+// 样式
 import "./index.scss";
 
 // #region 书写注意
@@ -28,6 +32,7 @@ import "./index.scss";
 // 使用函数模式则无此限制
 // ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
 
+// 页面状态属性
 type PageStateProps = {
   song: songType;
   counter: {
@@ -47,6 +52,7 @@ type PageStateProps = {
   recommend: any;
 };
 
+// 页面被发送过来的属性
 type PageDispatchProps = {
   getRecommendPlayList: () => any;
   getRecommendDj: () => any;
@@ -56,8 +62,10 @@ type PageDispatchProps = {
   updatePlayStatus: (object) => any;
 };
 
+// 页面自己的属性
 type PageOwnProps = {};
 
+// 页面状态
 type PageState = {
   current: number;
   showLoading: boolean;
@@ -69,12 +77,14 @@ type PageState = {
   searchValue: string;
 };
 
+// 获取所有属性
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps;
 
 interface Index {
   props: IProps;
 }
 
+// 退出播放 装饰器
 @injectPlaySong()
 @connect(
   ({ song }) => ({
@@ -105,6 +115,8 @@ interface Index {
     }
   })
 )
+
+
 class Index extends Component<IProps, PageState> {
   /**
    * 指定config的类型声明为: Taro.Config
@@ -119,6 +131,7 @@ class Index extends Component<IProps, PageState> {
 
   constructor(props) {
     super(props);
+    // 状态： 当前 显示加载中 广告项 搜索值
     this.state = {
       current: 0,
       showLoading: true,
@@ -127,6 +140,7 @@ class Index extends Component<IProps, PageState> {
     };
   }
 
+  // 生命周期 将接收props 转换为 state
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps);
     this.setState({
@@ -134,6 +148,7 @@ class Index extends Component<IProps, PageState> {
     });
   }
 
+  // 将要挂载 constructor()
   componentWillMount() {
     this.getPersonalized();
     this.getNewsong();
@@ -152,6 +167,7 @@ class Index extends Component<IProps, PageState> {
     this.removeLoading();
   }
 
+  // 关闭所有页面 打开某个页面
   switchTab(value) {
     if (value !== 1) return;
     Taro.reLaunch({
@@ -214,6 +230,7 @@ class Index extends Component<IProps, PageState> {
     });
   }
 
+  // 没完成
   goPage(pageName) {
     // Taro.navigateTo({
     //   url: `/pages/${pageName}/index`
@@ -234,6 +251,7 @@ class Index extends Component<IProps, PageState> {
     });
   }
 
+  // 删除加载中 当推荐播放列表 或是 推荐电台加入后 将showLoading 变成 false
   removeLoading() {
     const { recommendPlayList, recommendDj } = this.props;
     if (recommendPlayList.length || recommendDj.length) {
@@ -254,7 +272,9 @@ class Index extends Component<IProps, PageState> {
           hasMusicBox: !!song.currentSongInfo.name
         })}
       >
+{/* 加载页面 当页面加载完成后hide*/}
         <CLoading fullPage={true} hide={!showLoading} />
+{/* 音乐 */}
         <CMusic
           songInfo={{
             currentSongInfo,
@@ -264,6 +284,7 @@ class Index extends Component<IProps, PageState> {
           isHome={true}
           onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)}
         />
+{/* 搜索  */}
         <View onClick={this.goSearch.bind(this)}>
           <AtSearchBar
             actionName="搜一下"
@@ -272,6 +293,7 @@ class Index extends Component<IProps, PageState> {
             onChange={this.goSearch.bind(this)}
           />
         </View>
+{/* 广告项 */}
         <Swiper
           className="banner_list"
           indicatorColor="#999"
@@ -286,7 +308,9 @@ class Index extends Component<IProps, PageState> {
             </SwiperItem>
           ))}
         </Swiper>
-        <View className="handle_list">
+
+{/* tab-bar */}
+        <ScrollView className="handle_list" scroll-x >
           <View
             className="handle_list__item"
             onClick={this.goPage.bind(this, "dailyRecommend")}
@@ -294,7 +318,7 @@ class Index extends Component<IProps, PageState> {
             <View className="handle_list__item__icon-wrap">
               <AtIcon
                 prefixClass="fa"
-                value="calendar-minus-o"
+                value="calendar-o"
                 size="25"
                 color="#ffffff"
                 className="handle_list_item__icon"
@@ -302,6 +326,39 @@ class Index extends Component<IProps, PageState> {
             </View>
             <Text className="handle_list__item__text">每日推荐</Text>
           </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="heartbeat"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">私人FM</Text>
+          </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="stack-exchange"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">歌单</Text>
+          </View>
+
           <View
             className="handle_list__item"
             onClick={this.goPage.bind(this, "rank")}
@@ -317,7 +374,89 @@ class Index extends Component<IProps, PageState> {
             </View>
             <Text className="handle_list__item__text">排行榜</Text>
           </View>
-        </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="eercast"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">直播</Text>
+          </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="youtube-play"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">电台</Text>
+          </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="cc"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">数字专辑</Text>
+          </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="tripadvisor"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">唱聊</Text>
+          </View>
+
+          <View
+            className="handle_list__item"
+            onClick={this.goPage.bind(this, "rank")}
+          >
+            <View className="handle_list__item__icon-wrap">
+              <AtIcon
+                prefixClass="fa"
+                value="gamepad"
+                size="25"
+                color="#ffffff"
+                className="handle_list_item__icon"
+              ></AtIcon>
+            </View>
+            <Text className="handle_list__item__text">游戏专区</Text>
+          </View>
+
+        </ScrollView>
+ {/* 推荐歌单 */}
         <View className="recommend_playlist">
           <View className="recommend_playlist__title">推荐歌单</View>
           <View className="recommend_playlist__content">
@@ -360,6 +499,8 @@ class Index extends Component<IProps, PageState> {
             }
           </View>
         </View> */}
+
+{/* 底部tab  */}
         <AtTabBar
           fixed
           selectedColor="#d43c33"
@@ -370,6 +511,7 @@ class Index extends Component<IProps, PageState> {
           onClick={this.switchTab.bind(this)}
           current={this.state.current}
         />
+
       </View>
     );
   }

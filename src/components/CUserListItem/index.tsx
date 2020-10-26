@@ -14,6 +14,8 @@ type Props = {
   },
   clickFunc?: (number) => any
 }
+
+// 用户列表项
 const CUserListItem: FC<Props> = ({ userInfo, clickFunc }) => {
   function goDetail() {
     if (clickFunc) {
@@ -23,7 +25,7 @@ const CUserListItem: FC<Props> = ({ userInfo, clickFunc }) => {
   if (!userInfo) return null
   return (
       <View className='userListItem_components' onClick={() => goDetail()}>
-          <Image 
+          <Image
             src={`${userInfo.avatarUrl}?imageView&thumbnail=250x0`}
             className='userListItem__avatar'
           />

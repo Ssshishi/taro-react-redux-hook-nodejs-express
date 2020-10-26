@@ -1,3 +1,5 @@
+// 返回新的state
+
 import { 
   GETSONGDETAIL, 
   GETPLAYLISTDETAIL, 
@@ -15,6 +17,7 @@ import {
   RESETPLAYLIST
 } from '../constants/song'
 
+// state类型
 import { songType } from '../constants/commonType'
 
 const INITIAL_STATE: songType = {
@@ -58,16 +61,18 @@ const INITIAL_STATE: songType = {
   recentTab: 0
 }
 
+// reducer 返回新的state
 export default function song (state = INITIAL_STATE, action) {
   switch (action.type) {
-    // 获取歌曲详情
+    // 获取歌曲详情 （没做）
     case GETSONGDETAIL:
       return {
         ...state
       }
     // 获取歌单详情
-    case GETPLAYLISTDETAIL: 
+    case GETPLAYLISTDETAIL:
       const { playListDetailInfo, playListDetailPrivileges } = action.payload
+      // 可播放歌单
       let canPlayList = playListDetailInfo.tracks.filter((_, index) => {
         return playListDetailPrivileges[index].st !== -200
       })
@@ -76,7 +81,9 @@ export default function song (state = INITIAL_STATE, action) {
         playListDetailInfo,
         playListDetailPrivileges,
         canPlayList
-      }  
+      }
+
+      // 重置歌单
     case RESETPLAYLIST:
       return {
         ...state,
@@ -84,8 +91,10 @@ export default function song (state = INITIAL_STATE, action) {
         playListDetailPrivileges: [],
         canPlayList: []
       }
+
     // 获取推荐歌单  
     case GETRECOMMENDPLAYLIST:
+      // 从action.payload中获取 推荐歌单
       const { recommendPlayList } = action.payload
       return {
         ...state,

@@ -12,6 +12,7 @@ const CTitle: FC<Props> = ({ isFixed }) => {
     title_components: true,
     fixed: isFixed
   });
+  console.log("加载首页 头部名称")
   return (
     <View className={cls}>
       <Image

@@ -1,3 +1,4 @@
+// 歌单列表
 import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
@@ -107,6 +108,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
           onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)}
         />
         <View className="playList__header">
+          {/* 歌单头部 ： 图片 头衔 标题 名字*/}
           <Image
             className="playList__header__bg"
             src={playListDetailInfo.coverImgUrl}
@@ -135,6 +137,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             </View>
           </View>
         </View>
+        {/* 歌单简介 */}
         <View className="playList__header--more">
           <View className="playList__header--more__tag">
             标签：
@@ -149,6 +152,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             简介：{playListDetailInfo.description || "暂无"}
           </View>
         </View>
+        {/* 歌曲列表 */}
         <View className="playList__content">
           <View className="playList__content__title">歌曲列表</View>
           {playListDetailInfo.tracks.length === 0 ? <CLoading /> : ""}

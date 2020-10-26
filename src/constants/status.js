@@ -1,3 +1,6 @@
+// 状态码 刷新状态的 类型
+
+// http状态
 export const HTTP_STATUS = {
   SUCCESS: 200,
   CREATED: 201,
@@ -12,6 +15,7 @@ export const HTTP_STATUS = {
   GATEWAY_TIMEOUT: 504
 }
   
+// 刷新状态
 export const REFRESH_STATUS = {
   NORMAL: 0,
   REFRESHING: 1,

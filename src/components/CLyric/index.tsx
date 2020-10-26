@@ -18,12 +18,14 @@ type Props = {
   onTrigger: () => void;
 };
 
+// 组件
 const CLyric: FC<Props> = ({ lrc, lrcIndex, showLyric, onTrigger }) => {
   const cls = classnames({
     song__lyric_components: true,
     hidden: !showLyric
   });
-  // console.log("CLyric render");
+  console.log("CLyric render");
+  console.log("渲染歌词")
   return (
     <View
       className={cls}

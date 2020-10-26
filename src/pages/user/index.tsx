@@ -1,3 +1,4 @@
+// 用户
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
@@ -40,6 +41,7 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
+  // 获取用户详情
   getUserDetail() {
     const { id } = this.$router.params
     api.get('/user/detail', {
